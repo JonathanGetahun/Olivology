@@ -1,6 +1,7 @@
+import clipboardListener from './clipboard/clipboardListener';
 import filesystemExample from './filesystem/filesystemExample';
 import networkExample from './network/networkExample';
-import searchListener from './ui/searchListener';
 import olivologyExample from './olivology/olivologyExample';
+import searchListener from './ui/searchListener';
 
-export { filesystemExample, networkExample, searchListener, olivologyExample };
+export { clipboardListener, filesystemExample, networkExample, searchListener, olivologyExample };
