@@ -1,17 +1,6 @@
-import IntroWhisper from './IntroWhisper';
-import ClipboardWhisper from './ClipboardWhisper';
 import FilesystemWhisper from './FilesystemWhisper';
-import KeyboardWhisper from './KeyboardWhisper';
 import NetworkWhisper from './NetworkWhisper';
 import UiWhisper from './UiWhisper';
-import WindowWhisper from './WindowWhisper';
+import OlivologyWhisper from './OlivologyWhisper';
 
-export {
-  IntroWhisper,
-  ClipboardWhisper,
-  FilesystemWhisper,
-  KeyboardWhisper,
-  NetworkWhisper,
-  UiWhisper,
-  WindowWhisper,
-};
+export { FilesystemWhisper, NetworkWhisper, UiWhisper, OlivologyWhisper };

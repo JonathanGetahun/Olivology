@@ -1,18 +1,8 @@
-import { IntroWhisper } from './whispers';
-import {
-  clipboardListener,
-  filesystemExample,
-  keyboardListener,
-  networkExample,
-  searchListener,
-  activeWindowListener,
-} from './aptitudes';
+import { OlivologyWhisper } from './whispers';
+import { filesystemExample, networkExample, olivologyExample } from './aptitudes';
 
-clipboardListener.listen();
 filesystemExample.run();
-keyboardListener.listen();
 networkExample.run();
-searchListener.listen();
-activeWindowListener.listen();
+olivologyExample.listen();
 
-new IntroWhisper().show();
+new OlivologyWhisper().instructions();
