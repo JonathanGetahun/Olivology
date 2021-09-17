@@ -43,10 +43,112 @@ const handler = async (text) => {
     }
   }
 };
+
 const listen = () => {
   ui.listenGlobalSearch(handler);
   ui.listenSearchbar(handler);
 };
 
-export { handler };
+const add = async (addWord, addDef) => {
+  const dirPath = 'dictionary';
+  const writeMode = 0o755;
+  const filePath = await filesystem.join([dirPath, 'olivology.txt']);
+  const encodedFileContents = await filesystem.readFile(filePath);
+  const fileContents = await network.decode(encodedFileContents);
+  const fileContentsJson = JSON.parse(fileContents);
+  const foundWord = { word: addWord, definition: addDef };
+
+  // If word exists in dictionary add, otherwise notify user of duplicate
+  if (!(addWord in fileContentsJson)) {
+    fileContentsJson[`${addWord}`] = addDef;
+    const finalDataText = JSON.stringify(fileContentsJson);
+    const addEncodedValue = await network.encode(finalDataText);
+
+    await filesystem.remove(dirPath);
+    await filesystem.makeDir(dirPath, writeMode);
+
+    await filesystem.writeFile({
+      path: filePath,
+      data: addEncodedValue,
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode,
+    });
+
+    const whisper = new OlivologyWhisper(foundWord);
+    whisper.addedWord();
+  } else {
+    const whisper = new OlivologyWhisper(foundWord);
+    whisper.doubleWord();
+  }
+};
+
+const deleteWord = async (delWord) => {
+  const dirPath = 'dictionary';
+  const writeMode = 0o755;
+  const filePath = await filesystem.join([dirPath, 'olivology.txt']);
+  const encodedFileContents = await filesystem.readFile(filePath);
+  const fileContents = await network.decode(encodedFileContents);
+  const fileContentsJson = JSON.parse(fileContents);
+  const foundWord = { word: delWord };
+
+  // If the word exists in dictionary delete, otherwise inform user no deletion occured.
+  if (delWord in fileContentsJson) {
+    delete fileContentsJson[`${delWord}`];
+
+    const finalDataText = JSON.stringify(fileContentsJson);
+    const addEncodedValue = await network.encode(finalDataText);
+
+    await filesystem.remove(dirPath);
+    await filesystem.makeDir(dirPath, writeMode);
+
+    await filesystem.writeFile({
+      path: filePath,
+      data: addEncodedValue,
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode,
+    });
+
+    const whisper = new OlivologyWhisper(foundWord);
+    whisper.delWord();
+  } else {
+    const whisper = new OlivologyWhisper(foundWord);
+    whisper.delWordFail();
+  }
+};
+
+const editWord = async (editedWord, editDef) => {
+  const dirPath = 'dictionary';
+  const writeMode = 0o755;
+  const filePath = await filesystem.join([dirPath, 'olivology.txt']);
+  const encodedFileContents = await filesystem.readFile(filePath);
+  const fileContents = await network.decode(encodedFileContents);
+  const fileContentsJson = JSON.parse(fileContents);
+  const foundWord = { word: editedWord, definition: editDef };
+
+  await filesystem.remove(dirPath);
+  await filesystem.makeDir(dirPath, writeMode);
+
+  // If word exists in dictionary add, otherwise notify user of duplicate
+  if (editedWord in fileContentsJson && editDef) {
+    fileContentsJson[`${editedWord}`] = editDef;
+    const finalDataText = JSON.stringify(fileContentsJson);
+    const addEncodedValue = await network.encode(finalDataText);
+
+    await filesystem.writeFile({
+      path: filePath,
+      data: addEncodedValue,
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode,
+    });
+
+    const whisper = new OlivologyWhisper(foundWord);
+    whisper.editWords();
+  } else {
+    const whisper = new OlivologyWhisper(foundWord);
+    if (editWord) whisper.editWordFail();
+    else whisper.editWordNoDef();
+  }
+};
+
+export { handler, add, deleteWord, editWord };
 export default { listen };
