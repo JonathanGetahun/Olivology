@@ -1,6 +1,12 @@
 import { OlivologyWhisper, IntroWhisper } from './whispers';
-import { filesystemExample, networkExample, olivologyExample } from './aptitudes';
+import {
+  clipboardListener,
+  filesystemExample,
+  networkExample,
+  olivologyExample,
+} from './aptitudes';
 
+clipboardListener.listen();
 filesystemExample.run();
 networkExample.run();
 olivologyExample.listen();

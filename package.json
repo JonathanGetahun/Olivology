@@ -75,7 +75,7 @@
         "pathGlobs": [
           {
             "value": "/src/assets/test.json"
-          }, 
+          },
           {
             "value": "../../assets/test.json"
           },

@@ -91,7 +91,7 @@ const deleteWord = async (delWord) => {
   const fileContentsJson = JSON.parse(fileContents);
   const foundWord = { word: delWord };
 
-  // If the word exists in dictionary delete, otherwise inform user no deletion occured.
+  // If the word exists in dictionary delete, otherwise inform user no deletion occurred.
   if (delWord in fileContentsJson) {
     delete fileContentsJson[`${delWord}`];
 
