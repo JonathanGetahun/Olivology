@@ -4,7 +4,7 @@ import { add, deleteWord, editWord } from '../aptitudes/olivology/olivologyExamp
 export default class OlivologyWhisper {
   constructor(searchText) {
     this.whisper = undefined;
-    this.label = 'Olivology Aptitude Fired';
+    this.label = 'Olivology Whisper Fired';
     this.addLabelPass = 'Word was successfully added!';
     this.addLabelDouble = 'This word already exists.';
     this.delLabel = 'Word was successfully deleted!';
@@ -195,6 +195,33 @@ export default class OlivologyWhisper {
       .create({
         components: this.delComponent(),
         label: this.editLabelNoDef,
+        onClose: OlivologyWhisper.onClose,
+      })
+      .then((newWhisper) => {
+        this.whisper = newWhisper;
+      });
+  }
+
+  createClipboardComponents() {
+    console.log('CHEEEEEEECK', this.props.searchText, JSON.stringify(this.props.searchText));
+    const messages = [];
+    const wordDict = Object.keys(this.props.searchText);
+    wordDict.forEach((word) => {
+      messages.push({
+        type: whisper.WhisperComponentType.Message,
+        header: `${word}`,
+        body: `${this.props.searchText[`${word}`]}`,
+      });
+    });
+
+    return messages;
+  }
+
+  clipboardShow() {
+    whisper
+      .create({
+        components: this.createClipboardComponents(),
+        label: this.label,
         onClose: OlivologyWhisper.onClose,
       })
       .then((newWhisper) => {
