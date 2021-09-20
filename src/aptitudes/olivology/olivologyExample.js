@@ -1,5 +1,6 @@
 import { ui, filesystem, network } from '@oliveai/ldk';
 
+import { pluralize } from '@looop/pluralize';
 import { OlivologyWhisper } from '../../whispers';
 import dictData from '../../assets/dictionary.json';
 
@@ -33,13 +34,21 @@ const handler = async (text) => {
     const fileContentsJson = JSON.parse(fileContents);
     const words = Object.keys(fileContentsJson);
 
-    if (words.includes(searchString)) {
-      const foundWord = { word: searchString, definition: fileContentsJson[`${searchString}`] };
-      const whisper = new OlivologyWhisper(foundWord);
-      whisper.show();
-    } else {
-      const whisper = new OlivologyWhisper(null);
-      whisper.show();
+    const arrText = searchString.toUpperCase().split(' ');
+    const arrMatch = {};
+    const checkOliveWord = words.filter((word) => {
+      const arrWord = word.toUpperCase().split(' ');
+      const testMatch =
+        arrText.some(
+          (copiedText) => arrWord.includes(copiedText) || arrWord.includes(pluralize(copiedText, 1))
+        ) && word.toUpperCase() !== 'THE';
+      if (testMatch) arrMatch[`${word}`] = fileContentsJson[`${word}`];
+      return testMatch;
+    });
+
+    if (checkOliveWord.length >= 1) {
+      const whisper = new OlivologyWhisper(arrMatch);
+      whisper.definitionShow();
     }
   }
 };

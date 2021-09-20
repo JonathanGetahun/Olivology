@@ -6,13 +6,11 @@ import { pluralize } from '@looop/pluralize';
 
 const handler = async (text) => {
   const dirPath = 'dictionary';
-  const searchString = text;
   const writeMode = 0o755;
   const filePath = await filesystem.join([dirPath, 'olivology.txt']);
   const dictDataText = JSON.stringify(dictData);
   const encodedValue = await network.encode(dictDataText);
 
-  // Check to see if user submitted a word preceded by "/define"
   if (text) {
     // If directory doesn't exist make a new one
     if (!(await filesystem.exists(dirPath))) {
@@ -46,7 +44,7 @@ const handler = async (text) => {
 
     if (checkOliveWord.length >= 1) {
       const whisper = new OlivologyWhisper(arrMatch);
-      whisper.clipboardShow();
+      whisper.definitionShow();
     }
   }
 };
