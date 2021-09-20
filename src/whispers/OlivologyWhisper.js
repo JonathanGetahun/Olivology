@@ -202,7 +202,7 @@ export default class OlivologyWhisper {
       });
   }
 
-  createClipboardComponents() {
+  createDefinitionComponents() {
     console.log('CHEEEEEEECK', this.props.searchText, JSON.stringify(this.props.searchText));
     const messages = [];
     const wordDict = Object.keys(this.props.searchText);
@@ -217,10 +217,10 @@ export default class OlivologyWhisper {
     return messages;
   }
 
-  clipboardShow() {
+  definitionShow() {
     whisper
       .create({
-        components: this.createClipboardComponents(),
+        components: this.createDefinitionComponents(),
         label: this.label,
         onClose: OlivologyWhisper.onClose,
       })
