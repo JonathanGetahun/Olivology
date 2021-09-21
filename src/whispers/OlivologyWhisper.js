@@ -212,6 +212,7 @@ export default class OlivologyWhisper {
         body: stripIndent`
         # ${word}
         ${this.props.searchText[`${word}`]}`,
+      };
 
       messages.push({
         type: whisper.WhisperComponentType.CollapseBox,
