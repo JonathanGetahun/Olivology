@@ -1,5 +1,5 @@
 import { whisper } from '@oliveai/ldk';
-import { add, deleteWord, editWord } from '../aptitudes/olivology/olivologyExample';
+import { add, deleteWord, editWord, exportList } from '../aptitudes/olivology/olivologyExample';
 
 export default class OlivologyWhisper {
   constructor(searchText) {
@@ -13,10 +13,12 @@ export default class OlivologyWhisper {
     this.editLabelFail = 'No such word exists, unable to edit.';
     this.editLabelNoDef = 'Please enter a definition to edit.';
     this.labelInstruction = 'Olivology Whisper';
+    this.labelExport = 'Exported Olivology Dictionary Successfully!';
     this.props = {
       searchText,
     };
     this.instruction = `This Loop is triggered when you search a word created for use within Olive. To do so enter "/define" followed by a space and the word you want to lookup.`;
+    this.exportDef = `File "olivology.txt" created in folder Desktop/exportedOlivology`;
     this.word = undefined;
     this.def = undefined;
   }
@@ -84,7 +86,23 @@ export default class OlivologyWhisper {
       justifyContent: whisper.JustifyContent.SpaceEvenly,
     };
 
-    return [oliveComponentsHeading, wordInput, defInput, box, message];
+    const exportButton = {
+      type: whisper.WhisperComponentType.Button,
+      label: 'Export',
+      onClick: () => {
+        exportList();
+        console.log('Export button clicked.');
+      },
+    };
+
+    const transportButton = {
+      type: whisper.WhisperComponentType.Box,
+      children: [exportButton],
+      direction: whisper.Direction.Horizontal,
+      justifyContent: whisper.JustifyContent.SpaceEvenly,
+    };
+
+    return [oliveComponentsHeading, wordInput, defInput, box, transportButton, message];
   }
 
   instructions() {
@@ -112,7 +130,7 @@ export default class OlivologyWhisper {
   addedWord() {
     whisper
       .create({
-        components: this.addComponent(),
+        components: this.addEditComponent(),
         label: this.addLabelPass,
         onClose: OlivologyWhisper.onClose,
       })
@@ -124,7 +142,7 @@ export default class OlivologyWhisper {
   doubleWord() {
     whisper
       .create({
-        components: this.addComponent(),
+        components: this.addEditComponent(),
         label: this.addLabelDouble,
         onClose: OlivologyWhisper.onClose,
       })
@@ -203,7 +221,6 @@ export default class OlivologyWhisper {
   }
 
   createDefinitionComponents() {
-    console.log('CHEEEEEEECK', this.props.searchText, JSON.stringify(this.props.searchText));
     const messages = [];
     const wordDict = Object.keys(this.props.searchText);
     wordDict.forEach((word) => {
@@ -222,6 +239,27 @@ export default class OlivologyWhisper {
       .create({
         components: this.createDefinitionComponents(),
         label: this.label,
+        onClose: OlivologyWhisper.onClose,
+      })
+      .then((newWhisper) => {
+        this.whisper = newWhisper;
+      });
+  }
+
+  exportComponent() {
+    const message = {
+      type: whisper.WhisperComponentType.Message,
+      header: this.exportDef,
+    };
+
+    return [message];
+  }
+
+  exportList() {
+    whisper
+      .create({
+        components: this.exportComponent(),
+        label: this.labelExport,
         onClose: OlivologyWhisper.onClose,
       })
       .then((newWhisper) => {

@@ -75,19 +75,10 @@
       "filesystem": {
         "pathGlobs": [
           {
-            "value": "/src/assets/test.json"
+            "value": "/Users/jonathangetahun/Desktop/**"
           },
           {
-            "value": "../../assets/test.json"
-          },
-          {
-            "value": "*/test.json"
-          },
-          {
-            "value": "./test.json"
-          },
-          {
-            "value": "/src/aptitudes/olivology/test.json"
+            "value": "/Users/jonathangetahun/Desktop/**/*.txt"
           }
         ]
       },

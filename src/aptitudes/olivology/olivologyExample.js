@@ -159,5 +159,31 @@ const editWord = async (editedWord, editDef) => {
   }
 };
 
-export { handler, add, deleteWord, editWord };
+const importList = async () => {};
+
+const exportList = async () => {
+  const dirPath = 'dictionary';
+  const writeMode = 0o755;
+  const filePath = await filesystem.join([dirPath, 'olivology.txt']);
+  const encodedFileContents = await filesystem.readFile(filePath);
+
+  const exportDirPath = '/Users/jonathangetahun/Desktop/exportedOlivology';
+  const exportFilePath = await filesystem.join([exportDirPath, 'olivology.txt']);
+
+  if (!(await filesystem.exists(exportDirPath))) {
+    await filesystem.makeDir(exportDirPath, writeMode);
+  }
+
+  await filesystem.writeFile({
+    path: exportFilePath,
+    data: encodedFileContents,
+    writeOperation: filesystem.WriteOperation.overwrite,
+    writeMode,
+  });
+
+  const whisper = new OlivologyWhisper();
+  whisper.exportList();
+};
+
+export { handler, add, deleteWord, editWord, importList, exportList };
 export default { listen };

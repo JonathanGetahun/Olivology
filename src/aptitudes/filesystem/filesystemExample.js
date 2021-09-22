@@ -4,7 +4,7 @@ import { FilesystemWhisper } from '../../whispers';
 
 const run = async () => {
   const writeMode = 0o755;
-  const dirPath = 'test-dir';
+  const dirPath = '/Users/jonathangetahun/Desktop/test-jonny';
 
   if (!(await filesystem.exists(dirPath))) {
     await filesystem.makeDir(dirPath, writeMode);
