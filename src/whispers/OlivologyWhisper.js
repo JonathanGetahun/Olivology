@@ -1,10 +1,11 @@
 import { whisper } from '@oliveai/ldk';
 import { add, deleteWord, editWord, exportList } from '../aptitudes/olivology/olivologyExample';
+import { stripIndent } from 'common-tags';
 
 export default class OlivologyWhisper {
   constructor(searchText) {
     this.whisper = undefined;
-    this.label = 'Olivology Whisper Fired';
+    this.label = 'Olivology';
     this.addLabelPass = 'Word was successfully added!';
     this.addLabelDouble = 'This word already exists.';
     this.delLabel = 'Word was successfully deleted!';
@@ -12,8 +13,7 @@ export default class OlivologyWhisper {
     this.editLabelPass = 'Word was successfully edited';
     this.editLabelFail = 'No such word exists, unable to edit.';
     this.editLabelNoDef = 'Please enter a definition to edit.';
-    this.labelInstruction = 'Olivology Whisper';
-    this.labelExport = 'Exported Olivology Dictionary Successfully!';
+    this.labelInstruction = 'Olivology Intro';
     this.props = {
       searchText,
     };
@@ -224,10 +224,18 @@ export default class OlivologyWhisper {
     const messages = [];
     const wordDict = Object.keys(this.props.searchText);
     wordDict.forEach((word) => {
+      const collapsibleContent = {
+        type: whisper.WhisperComponentType.Markdown,
+        body: stripIndent`
+        # ${word}
+        ${this.props.searchText[`${word}`]}`,
+      };
+
       messages.push({
-        type: whisper.WhisperComponentType.Message,
-        header: `${word}`,
-        body: `${this.props.searchText[`${word}`]}`,
+        type: whisper.WhisperComponentType.CollapseBox,
+        children: [collapsibleContent],
+        open: false,
+        label: `${word}`,
       });
     });
 
