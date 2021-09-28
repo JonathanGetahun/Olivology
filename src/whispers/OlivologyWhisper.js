@@ -10,7 +10,7 @@ export default class OlivologyWhisper {
       searchText,
     };
     this.instruction = stripIndent`
-    This Loop is triggered when you search a word created for use within Olive. To do so enter \`olive\` followed by a space and the word you want to lookup. 
+    This Loop is triggered when you search a word created for use within Olive. To do so enter \`/olive\` followed by a space and the word you want to lookup. 
     
     You can also copy a word or a sentence and Olivology will find words that match or are similar.`;
     this.word = undefined;
@@ -42,18 +42,10 @@ export default class OlivologyWhisper {
     const messages = [];
     const wordDict = Object.keys(this.props.searchText);
     wordDict.forEach((word) => {
-      const collapsibleContent = {
-        type: whisper.WhisperComponentType.Markdown,
-        body: stripIndent`
-        # ${word}
-        ${this.props.searchText[`${word}`]}`,
-      };
-
       messages.push({
-        type: whisper.WhisperComponentType.CollapseBox,
-        children: [collapsibleContent],
-        open: false,
-        label: `${word}`,
+        type: whisper.WhisperComponentType.Message,
+        header: `${word}`,
+        body: `${this.props.searchText[`${word}`]}`,
       });
     });
 
