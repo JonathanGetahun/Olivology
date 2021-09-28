@@ -5,7 +5,7 @@ export default class OlivologyWhisper {
   constructor(searchText) {
     this.whisper = undefined;
     this.label = 'Olivology';
-    this.labelInstruction = 'Olivology Intro';
+    this.labelInstruction = 'Olivology Started';
     this.props = {
       searchText,
     };
