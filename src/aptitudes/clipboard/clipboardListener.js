@@ -1,29 +1,13 @@
 import { clipboard, filesystem, network } from '@oliveai/ldk';
 
-import { OlivologyWhisper } from '../../whispers';
-import dictData from '../../assets/dictionary.json';
 import { pluralize } from '@looop/pluralize';
+import { OlivologyWhisper } from '../../whispers';
 
 const handler = async (text) => {
   const dirPath = 'dictionary';
-  const writeMode = 0o755;
   const filePath = await filesystem.join([dirPath, 'olivology.txt']);
-  const dictDataText = JSON.stringify(dictData);
-  const encodedValue = await network.encode(dictDataText);
 
   if (text) {
-    // If directory doesn't exist make a new one
-    if (!(await filesystem.exists(dirPath))) {
-      await filesystem.makeDir(dirPath, writeMode);
-
-      await filesystem.writeFile({
-        path: filePath,
-        data: encodedValue,
-        writeOperation: filesystem.WriteOperation.overwrite,
-        writeMode,
-      });
-    }
-
     // Check if word searched is in the dictionary
     const encodedFileContents = await filesystem.readFile(filePath);
     const fileContents = await network.decode(encodedFileContents);
