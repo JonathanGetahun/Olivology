@@ -1,4 +1,4 @@
 import clipboardListener from './clipboard/clipboardListener';
-import olivologyExample from './olivology/olivologyExample';
+import olivologyStart from './olivology/olivologyStart';
 
-export { clipboardListener, olivologyExample };
+export { clipboardListener, olivologyStart };

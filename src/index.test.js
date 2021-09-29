@@ -1,4 +1,4 @@
-import { clipboardListener, filesystemExample, networkExample, searchListener } from './aptitudes';
+import { clipboardListener } from './aptitudes';
 
 jest.mock('./aptitudes');
 jest.mock('@oliveai/ldk');
@@ -23,8 +23,5 @@ describe('Project Startup', () => {
 
     expect(mockIntroShow).toBeCalled();
     expect(clipboardListener.listen).toBeCalled();
-    expect(filesystemExample.run).toBeCalled();
-    expect(networkExample.run).toBeCalled();
-    expect(searchListener.listen).toBeCalled();
   });
 });
