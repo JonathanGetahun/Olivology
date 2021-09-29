@@ -87,6 +87,9 @@
         "urlDomains": [
           {
             "value": "*.fda.gov"
+          },
+          {
+            "value": "*.oliveai.dev"
           }
         ]
       },
